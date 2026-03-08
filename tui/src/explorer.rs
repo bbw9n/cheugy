@@ -1,6 +1,6 @@
 use anyhow::Result;
 use cheugy_core::pipeline::read_jsonl;
-use cheugy_core::schema::{Entity, SemanticCluster};
+use cheugy_core::schema::{Entity, Relic};
 use crossterm::{
     event::{self, Event, KeyCode},
     execute,
@@ -18,7 +18,7 @@ use std::path::Path;
 use std::time::Duration;
 
 pub fn run(root: &Path) -> Result<()> {
-    let clusters = read_jsonl::<SemanticCluster>(&root.join(".cheugy/clusters.jsonl")).unwrap_or_default();
+    let relics = read_jsonl::<Relic>(&root.join(".cheugy/relics.jsonl")).unwrap_or_default();
     let entities = read_jsonl::<Entity>(&root.join(".cheugy/entities.jsonl")).unwrap_or_default();
 
     enable_raw_mode()?;
@@ -49,7 +49,7 @@ pub fn run(root: &Path) -> Result<()> {
                 ])
                 .split(chunks[1]);
 
-            let cluster_items: Vec<ListItem> = clusters
+            let relic_items: Vec<ListItem> = relics
                 .iter()
                 .enumerate()
                 .map(|(idx, c)| {
@@ -62,10 +62,10 @@ pub fn run(root: &Path) -> Result<()> {
                 })
                 .collect();
 
-            let cluster_list = List::new(cluster_items).block(
+            let relic_list = List::new(relic_items).block(
                 Block::default()
                     .borders(Borders::ALL)
-                    .title("Semantic Clusters")
+                    .title("Relics")
                     .style(Style::default().add_modifier(Modifier::BOLD)),
             );
 
@@ -77,10 +77,10 @@ pub fn run(root: &Path) -> Result<()> {
 
             let entity_list = List::new(entity_items).block(Block::default().borders(Borders::ALL).title("Entities"));
 
-            let code_view = if clusters.is_empty() {
-                Paragraph::new("No clusters found. Run `cheugy scan .` then `cheugy build`.")
+            let code_view = if relics.is_empty() {
+                Paragraph::new("No relics found. Run `cheugy scan .` then `cheugy build`.")
             } else {
-                let c = &clusters[selected.min(clusters.len() - 1)];
+                let c = &relics[selected.min(relics.len() - 1)];
                 let mut lines = vec![
                     format!("Theme: {}", c.theme),
                     format!("Feature: {}", c.distinguishing_feature),
@@ -94,7 +94,7 @@ pub fn run(root: &Path) -> Result<()> {
             }
             .block(Block::default().borders(Borders::ALL).title("Code View"));
 
-            f.render_widget(cluster_list, body[0]);
+            f.render_widget(relic_list, body[0]);
             f.render_widget(entity_list, body[1]);
             f.render_widget(code_view, body[2]);
         })?;
@@ -104,8 +104,8 @@ pub fn run(root: &Path) -> Result<()> {
                 match key.code {
                     KeyCode::Char('q') => break,
                     KeyCode::Char('j') | KeyCode::Down => {
-                        if !clusters.is_empty() {
-                            selected = (selected + 1).min(clusters.len() - 1)
+                        if !relics.is_empty() {
+                            selected = (selected + 1).min(relics.len() - 1)
                         }
                     }
                     KeyCode::Char('k') | KeyCode::Up => {

@@ -2,7 +2,7 @@
 
 ## Flow
 
-Evidence -> Observations -> Entities -> Relations -> Semantic Clusters
+Evidence -> Observations -> Entities -> Relations -> Relics
 
 ## Runtime
 
@@ -10,7 +10,7 @@ Evidence -> Observations -> Entities -> Relations -> Semantic Clusters
 2. Rust loads `extractors/manifest.json`
 3. Rust launches each Perl extractor and parses JSONL evidence
 4. `cheugy build` normalizes evidence into typed architecture records
-5. `cheugy explore` renders cluster/entity/code panes in TUI
+5. `cheugy explore` renders relic/entity/code panes in TUI
 
 ## Extensibility
 

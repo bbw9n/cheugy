@@ -7,7 +7,7 @@ Code Archaeology Engine — browse code by meaning.
 This repository contains a working local pipeline:
 
 1. Perl extractors emit JSONL evidence.
-2. Rust core normalizes evidence into observations/entities/relations/clusters.
+2. Rust core normalizes evidence into observations/entities/relations/relics.
 3. Rust CLI drives `init`, `scan`, `build`, `inspect`, `query`, `explore`.
 4. Ratatui-based TUI provides a base explorer screen.
 

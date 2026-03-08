@@ -1,9 +1,9 @@
-use crate::cluster_engine::build_semantic_clusters;
+use crate::cluster_engine::build_relics;
 use crate::entity_graph::build_entities;
 use crate::patterns::AdapterRegistry;
 use crate::perl_bridge::{load_manifest, manifest_path, run_extractors};
 use crate::relation_engine::infer_relations;
-use crate::schema::{Entity, Evidence, Observation, Relation, SemanticCluster};
+use crate::schema::{Entity, Evidence, Observation, Relic, Relation};
 use anyhow::{Context, Result};
 use serde::Serialize;
 use serde_json::json;
@@ -15,7 +15,7 @@ pub struct BuildArtifacts {
     pub observations: Vec<Observation>,
     pub entities: Vec<Entity>,
     pub relations: Vec<Relation>,
-    pub clusters: Vec<SemanticCluster>,
+    pub relics: Vec<Relic>,
 }
 
 pub fn init_repo(root: &Path) -> Result<()> {
@@ -36,12 +36,12 @@ pub fn build(root: &Path) -> Result<BuildArtifacts> {
     let observations = normalize_observations(&evidence);
     let entities = build_entities(&observations);
     let relations = infer_relations(&entities);
-    let clusters = build_semantic_clusters(&observations);
+    let relics = build_relics(&observations);
 
     write_jsonl(root.join(".cheugy/observations.jsonl"), &observations)?;
     write_jsonl(root.join(".cheugy/entities.jsonl"), &entities)?;
     write_jsonl(root.join(".cheugy/relations.jsonl"), &relations)?;
-    write_jsonl(root.join(".cheugy/clusters.jsonl"), &clusters)?;
+    write_jsonl(root.join(".cheugy/relics.jsonl"), &relics)?;
 
     fs::write(
         root.join(".cheugy/index.json"),
@@ -50,7 +50,7 @@ pub fn build(root: &Path) -> Result<BuildArtifacts> {
             "observations": observations.len(),
             "entities": entities.len(),
             "relations": relations.len(),
-            "clusters": clusters.len(),
+            "relics": relics.len(),
         }))?,
     )?;
 
@@ -58,7 +58,7 @@ pub fn build(root: &Path) -> Result<BuildArtifacts> {
         observations,
         entities,
         relations,
-        clusters,
+        relics,
     })
 }
 
@@ -70,10 +70,10 @@ pub fn inspect_entity_type(root: &Path, entity_type: &str) -> Result<Vec<Entity>
         .collect())
 }
 
-pub fn query(root: &Path, q: &str) -> Result<Vec<SemanticCluster>> {
+pub fn query(root: &Path, q: &str) -> Result<Vec<Relic>> {
     let query = q.to_lowercase();
-    let clusters = read_jsonl::<SemanticCluster>(&root.join(".cheugy/clusters.jsonl"))?;
-    Ok(clusters
+    let relics = read_jsonl::<Relic>(&root.join(".cheugy/relics.jsonl"))?;
+    Ok(relics
         .into_iter()
         .filter(|c| {
             c.label.to_lowercase().contains(&query)

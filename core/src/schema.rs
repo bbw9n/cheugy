@@ -43,7 +43,7 @@ pub struct Relation {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SemanticCluster {
+pub struct Relic {
     pub record_type: String,
     pub label: String,
     pub theme: String,

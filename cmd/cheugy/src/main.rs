@@ -48,7 +48,7 @@ fn main() -> Result<()> {
             println!("Observations: {}", build.observations.len());
             println!("Entities: {}", build.entities.len());
             println!("Relations: {}", build.relations.len());
-            println!("Clusters: {}", build.clusters.len());
+            println!("Relics: {}", build.relics.len());
         }
         Commands::Inspect { kind, name } => {
             if kind == "service" {
@@ -86,12 +86,12 @@ fn main() -> Result<()> {
             }
         }
         Commands::Query { text } => {
-            let clusters = pipeline::query(&cwd, &text)?;
-            if clusters.is_empty() {
-                println!("No semantic clusters matched '{}'.", text);
+            let relics = pipeline::query(&cwd, &text)?;
+            if relics.is_empty() {
+                println!("No relics matched '{}'.", text);
             } else {
-                println!("Semantic results for '{}':", text);
-                for c in clusters {
+                println!("Relic results for '{}':", text);
+                for c in relics {
                     println!("- {} :: {}", c.label, c.theme);
                 }
             }

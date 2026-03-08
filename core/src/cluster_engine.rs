@@ -1,7 +1,7 @@
-use crate::schema::{Observation, SemanticCluster};
+use crate::schema::{Observation, Relic};
 use std::collections::{BTreeSet, HashMap};
 
-pub fn build_semantic_clusters(observations: &[Observation]) -> Vec<SemanticCluster> {
+pub fn build_relics(observations: &[Observation]) -> Vec<Relic> {
     let mut buckets: HashMap<String, BTreeSet<String>> = HashMap::new();
 
     for ob in observations {
@@ -24,8 +24,8 @@ pub fn build_semantic_clusters(observations: &[Observation]) -> Vec<SemanticClus
 
     buckets
         .into_iter()
-        .map(|(label, paths)| SemanticCluster {
-            record_type: "semantic_cluster".into(),
+        .map(|(label, paths)| Relic {
+            record_type: "relic".into(),
             theme: format!("{} theme", label),
             distinguishing_feature: "Grouped using path + evidence heuristics".into(),
             label,
