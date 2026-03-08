@@ -18,8 +18,15 @@ cargo run -p cheugy -- init
 cargo run -p cheugy -- scan .
 cargo run -p cheugy -- build .
 cargo run -p cheugy -- inspect service api
-cargo run -p cheugy -- query "monetization"
+cargo run -p cheugy -- query "payment"
 cargo run -p cheugy -- explore
+```
+
+## Test
+
+```bash
+cargo test -p cheugy-core
+prove -v extractors/t
 ```
 
 ## Extending Extractors (Perl -> Rust binding)

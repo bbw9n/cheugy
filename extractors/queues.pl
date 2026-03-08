@@ -20,16 +20,17 @@ sub emit {
   print encode_json($ev) . "\n";
 }
 
-my @files = `find "$root" -type f \\( -name '*.go' -o -name '*.rs' -o -name '*.py' -o -name '*.js' \\) 2>/dev/null`;
+my @files = `find "$root" -type f \\( -name '*.go' -o -name '*.rs' -o -name '*.py' -o -name '*.js' -o -name '*.ts' -o -name '*.rb' \\) 2>/dev/null`;
 for my $file (@files) {
   chomp $file;
   open my $fh, '<', $file or next;
   my $line_no = 0;
   while (my $line = <$fh>) {
     $line_no++;
-    if ($line =~ /(kafka|topic|queue|publish|consume)[^"']*["']([a-zA-Z0-9_.-]+)["']/i) {
+    if ($line =~ /\b(?:kafka|topic|queue|publish|consume)\b[^"']*["']([a-zA-Z0-9_.-]+)["']/i) {
+      my $topic = $1;
       (my $p = $file) =~ s/^\Q$root\E\/?//;
-      emit($p, $line_no, $line, $2);
+      emit($p, $line_no, $line, $topic);
     }
   }
   close $fh;

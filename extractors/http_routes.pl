@@ -20,7 +20,7 @@ sub emit {
   print encode_json($ev) . "\n";
 }
 
-my @files = `find "$root" -type f \\( -name '*.go' -o -name '*.js' -o -name '*.ts' -o -name '*.rs' \\) 2>/dev/null`;
+my @files = `find "$root" -type f \\( -name '*.go' -o -name '*.js' -o -name '*.ts' -o -name '*.rs' -o -name '*.rb' \\) 2>/dev/null`;
 for my $file (@files) {
   chomp $file;
   next if $file =~ /\.git\//;
@@ -29,6 +29,10 @@ for my $file (@files) {
   while (my $line = <$fh>) {
     $line_no++;
     if ($line =~ /(GET|POST|PUT|DELETE|PATCH)\s*\(\s*["']([^"']+)["']/i) {
+      my ($method, $route) = (uc($1), $2);
+      (my $p = $file) =~ s/^\Q$root\E\/?//;
+      emit($p, $line_no, $line, $method, $route);
+    } elsif ($line =~ /\b(get|post|put|delete|patch)\b\s+["']([^"']+)["']/i) {
       my ($method, $route) = (uc($1), $2);
       (my $p = $file) =~ s/^\Q$root\E\/?//;
       emit($p, $line_no, $line, $method, $route);

@@ -20,7 +20,7 @@ sub emit {
   print encode_json($ev) . "\n";
 }
 
-my @files = `find "$root" -type f \\( -name '*.sql' -o -name '*.go' -o -name '*.rs' -o -name '*.py' \\) 2>/dev/null`;
+my @files = `find "$root" -type f \\( -name '*.sql' -o -name '*.go' -o -name '*.rs' -o -name '*.py' -o -name '*.js' -o -name '*.ts' -o -name '*.rb' \\) 2>/dev/null`;
 for my $file (@files) {
   chomp $file;
   next if $file =~ /\.git\//;
