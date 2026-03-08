@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cheugy/observation.schema.json",
+  "title": "Cheugy Observation",
+  "type": "object",
+  "required": ["id", "record_type", "kind", "canonical_name", "path"],
+  "properties": {
+    "id": { "type": "string" },
+    "record_type": { "const": "observation" },
+    "kind": { "type": "string" },
+    "canonical_name": { "type": "string" },
+    "path": { "type": "string" },
+    "details": { "type": "object" }
+  }
+}

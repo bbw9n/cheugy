@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cheugy/evidence.schema.json",
+  "title": "Cheugy Evidence",
+  "type": "object",
+  "required": ["id", "record_type", "extractor", "path", "line", "raw", "captures"],
+  "properties": {
+    "id": { "type": "string" },
+    "record_type": { "const": "evidence" },
+    "extractor": { "type": "string" },
+    "path": { "type": "string" },
+    "line": { "type": "integer", "minimum": 1 },
+    "raw": { "type": "string" },
+    "captures": { "type": "object" }
+  }
+}

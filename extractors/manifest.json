@@ -1,0 +1,14 @@
+{
+  "extractors": [
+    { "name": "entrypoints", "script": "extractors/entrypoints.pl", "enabled": true },
+    { "name": "http_routes", "script": "extractors/http_routes.pl", "enabled": true },
+    { "name": "env_vars", "script": "extractors/env_vars.pl", "enabled": true },
+    { "name": "db_tables", "script": "extractors/db_tables.pl", "enabled": true },
+    { "name": "queues", "script": "extractors/queues.pl", "enabled": true },
+    { "name": "rpc_services", "script": "extractors/rpc_services.pl", "enabled": true },
+    { "name": "scheduled_jobs", "script": "extractors/scheduled_jobs.pl", "enabled": true },
+    { "name": "feature_flags", "script": "extractors/feature_flags.pl", "enabled": true },
+    { "name": "metrics", "script": "extractors/metrics.pl", "enabled": true },
+    { "name": "external_urls", "script": "extractors/external_urls.pl", "enabled": true }
+  ]
+}
